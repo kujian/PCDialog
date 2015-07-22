@@ -1,0 +1,76 @@
+<div class="mark-bg" id="mark-bg">
+	  <!--[if IE 6]>
+	  <iframe frameborder="0" ></iframe>
+	  <style>
+	  #mark-bg iframe{position: absolute;top: 0;left: 0;width: 100%;height: 100%;filter:alpha(opacity=0); z-index:1000;}
+	  </style>
+	  <![endif]-->
+</div>
+<div class="pop-box" id="pop-iframe">
+	<div class="pop-top"><span class="sub-mark close"><i class="icon icon-delete"></i></span><span class="tit">查看活动详情</span></div>
+	<div class="pop-con">
+		<iframe src="" width="100%" frameborder="0" scrolling="auto" id="popFrame" height="175"></iframe>
+	</div>
+</div>
+<script type="text/javascript">
+var markBg=$("#mark-bg");
+/*初始化遮罩层的高度*/
+markBg.height($(window).height());
+$(window).resize(function(){
+    markBg.height($(window).height());
+});
+function showPop(obj){
+	this.width=obj.width;
+	this.height=obj.height;
+    this.str=obj.str;
+    this.tit=obj.tit;
+    this.src=obj.src;
+    this.txt=obj.txt;
+    this.btns=obj.btns;
+    var closeMark=obj.closeMark;
+    var pop=$("#pop-"+this.str);
+    var ie6 = !-[1, ] && !window.XMLHttpRequest; //兼容IE6
+    var _height = -parseInt(pop.outerHeight()/2);
+    var _width = -parseInt(pop.outerWidth()/2);
+    var popClose=pop.find(".close");
+    this.tit != undefined ? pop.find('.tit').html(this.tit) : pop.find('.tit').html('提示');
+    if(this.src != undefined){
+    	$('#popFrame').attr('src',this.src);
+    }
+    if(this.height !=undefined){
+    	_height = -parseInt(this.height)/2;
+        var popHeight = parseInt(this.height) - 50
+    	$('#popFrame').attr('height',popHeight+'px');
+    }
+    if(this.width != undefined){
+    	_width = -parseInt(this.width)/2;
+    }
+    if(this.txt!=undefined){
+	    	pop.find('.txt').html(this.txt);
+	}
+    var scrollTop=document.documentElement.scrollTop || document.body.scrollTop;
+    if(ie6) _height = scrollTop + _height;
+    pop.css({
+    	'margin-left':_width,
+    	'margin-top':_height
+    });
+    if(this.width !=undefined) pop.css('width',this.width);
+    if(this.height !=undefined) pop.css('height',this.height);
+    markBg.show(); 
+    pop.show();
+    popClose.click(function(){
+        pop.hide();
+        if(closeMark!=false){
+            markBg.hide();
+        }
+        pop.removeAttr('style');
+    })
+}
+function hidePop(str,type){
+    var pop=$("#pop-"+str);
+    pop.hide();
+    if(type!="1"){
+        markBg.hide();
+    }    
+}
+</script>
